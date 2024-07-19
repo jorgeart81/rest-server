@@ -40,7 +40,7 @@ export class TodoController {
     };
 
     todos.push(newTodo);
-    return res.json(newTodo);
+    return res.status(201).json(newTodo);
   }
 
   public updateTodo(req: Request, res: Response) {
@@ -65,5 +65,24 @@ export class TodoController {
     copyTodos[todoIndex].text = text;
 
     return res.json(copyTodos[todoIndex]);
+  }
+
+  public deleteTodo(req: Request, res: Response) {
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+      return res
+        .status(400)
+        .json({ error: `TODO with id ${req.params.id} not found` });
+    }
+
+    const todoIndex = todos.findIndex((todo) => todo.id === id);
+    if (todoIndex < 0) {
+      return res.status(404).json({ error: `TODO with id ${id} not found` });
+    }
+
+    todos.splice(todoIndex, 1);
+
+    return res.status(204).json();
   }
 }
