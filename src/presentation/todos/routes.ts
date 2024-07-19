@@ -8,6 +8,8 @@ export class TodoRoutes {
     const controller = new TodoController();
 
     router.get('/', controller.getTodos);
+    router.get('/:id', controller.getTodoById);
+    router.post('/', controller.createTodo);
 
     return router;
   }
